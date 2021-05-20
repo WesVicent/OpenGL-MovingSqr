@@ -13,6 +13,8 @@
 *.la
 *.a
 
+.vs
+
 # Visual Studio Files
 Debug
 Release
