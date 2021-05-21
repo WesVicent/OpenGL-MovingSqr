@@ -15,6 +15,7 @@
 #include "input/Handler.h"
 #include "input/Keys.h"
 #include "entity/player/Player.h"
+#include "core/Application.h"
 
 #include <SOIL.h>
 
@@ -27,7 +28,7 @@ bool keypool[349];
 
 int main() {
 	// Setup window, glew and OpenGL viewPort.
-	glfwInit();
+	/*glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -46,15 +47,15 @@ int main() {
 	glewExperimental = GL_TRUE;
 	glewInit();
 
-	glViewport(0, 0, 600, 600);
+	glViewport(0, 0, 600, 600);*/
 	// ----------------------------------------------
 
-	Entity::Player* player = new Entity::Player();
+	//Entity::Player* player = new Entity::Player();
 
 	// --------------------------------------------------------------------------------------
 	// -------------------------------------------------------------------------------- LOOP
 	// --------------------------------------------------------------------------------------
-	while (!glfwWindowShouldClose(window)) {
+	/*while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -70,7 +71,9 @@ int main() {
 
 	delete player;
 
-	glfwTerminate();
+	glfwTerminate();*/
+
+	Application* app = Application::getInstance(keyCallback, keypool, enabledKeys);
 	return 0;
 }
 
