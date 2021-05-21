@@ -9,21 +9,13 @@
 #include "../../type/Type.h"
 
 namespace Entity {
-
-	struct EnabledKey { // Todo: Make it an array.
-		bool right;
-		bool left;
-		bool up;
-		bool down;
-	};
-
 	class Player {
 	public:
 		bool canMove = false;
 		//
 		Player();
 		~Player();
-		void allowMovements(Entity::EnabledKey* key);
+		void allowMovements(EnabledKeys key);
 		void draw();
 
 	private:
@@ -44,8 +36,8 @@ namespace Entity {
 		}; // Default indices
 
 		//
-		void checkMovementCall(Entity::EnabledKey* key);
-		Type::Coordinates calculateMovements(Entity::EnabledKey* key);
+		void checkMovementCall(EnabledKeys key);
+		Type::Coordinates calculateMovements(EnabledKeys key);
 		void processShaders();
 		void processBuffers();
 	};
@@ -123,7 +115,7 @@ namespace Entity {
 		glDeleteShader(fragmentShader);
 	}
 
-	void Player::allowMovements(Entity::EnabledKey* key) {
+	void Player::allowMovements(EnabledKeys key) {
 		checkMovementCall(key);
 
 		if (this->canMove) {
@@ -137,40 +129,40 @@ namespace Entity {
 		glUniformMatrix4fv(this->u_movement, 1, GL_FALSE, glm::value_ptr(*this->movement));
 	}
 
-	void Player::checkMovementCall(Entity::EnabledKey* key) {
-		this->canMove = key->right || key->left || key->up || key->down;
+	void Player::checkMovementCall(EnabledKeys key) {
+		this->canMove = key.right || key.left || key.up || key.down;
 	}
 
-	Type::Coordinates Player::calculateMovements(Entity::EnabledKey* key) {
+	Type::Coordinates Player::calculateMovements(EnabledKeys key) {
 		float x = 0.0f;
 		float y = 0.0f;
 
-		if (key->right) {
-			if (key->up) {
+		if (key.right) {
+			if (key.up) {
 				x = velocity;
 				y = velocity;
-			} else if (key->down) {
+			} else if (key.down) {
 				x = velocity;
 				y = velocity / -2;
 			} else {
 				x = velocity;
 				y = 0.0f;
 			}
-		} else if (key->left) {
-			if (key->up) {
+		} else if (key.left) {
+			if (key.up) {
 				x = velocity * -1;
 				y = velocity / 2;
-			} else if (key->down) {
+			} else if (key.down) {
 				x = velocity * -1;
 				y = velocity / -2;
 			} else {
 				x = velocity * -1;
 				y = 0.0f;
 			}
-		} else if (key->up) {
+		} else if (key.up) {
 			x = 0.0f;
 			y = velocity;
-		} else if (key->down) {
+		} else if (key.down) {
 			x = 0.0f;
 			y = velocity * -1;
 		}

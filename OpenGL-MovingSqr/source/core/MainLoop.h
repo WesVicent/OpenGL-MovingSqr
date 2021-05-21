@@ -10,19 +10,19 @@ class MainLoop {
 protected:
 
 public:
-	static void exec(GLFWwindow* context, Entity::Player* player, bool keypool[349], Entity::EnabledKey* enabledKeys);
+	static void exec(GLFWwindow* context, Entity::Player* player);
 private:
 
 };
 
-void MainLoop::exec(GLFWwindow* context, Entity::Player* player, bool keypool[349], Entity::EnabledKey* enabledKeys) {
+void MainLoop::exec(GLFWwindow* context, Entity::Player* player) {
 	while (!glfwWindowShouldClose(context)) {
 		glfwPollEvents();
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		if (keypool != nullptr) {
-			player->allowMovements(enabledKeys);
+		if (MainWindowSpecs::keypool != nullptr) {
+			player->allowMovements(MainWindowSpecs::enabledKeys);
 		}
 
 		player->draw();

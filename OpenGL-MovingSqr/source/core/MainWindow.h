@@ -7,26 +7,27 @@
 #define MAIN_WINDOW_H
 
 #include "../base/Window.h";
-#include "../const/WindowConfig.h";
+#include "../specs/MainWindowSpecs.h";
 
 class MainWindow : public Window {
 protected:
 
 public:
-	static GLFWwindow* exec(GLFWkeyfun keyCallback);
+	static GLFWwindow* exec();
+	
 	~MainWindow();
 
 private:
-	MainWindow(int width, int height, const char* title, GLFWkeyfun keyCallback);
+	MainWindow(int width, int height, const char* title);
 
 };
 
-MainWindow::MainWindow(int width, int height, const char* title, GLFWkeyfun keyCallback) :Window(width, height, title, keyCallback) {
+MainWindow::MainWindow(int width, int height, const char* title) :Window(width, height, title) { }
 
-}
+GLFWwindow* MainWindow::exec() {
+	MainWindow* window = new MainWindow(MainWindowSpecs::WIDTH, MainWindowSpecs::HEIGHT, MainWindowSpecs::TITLE);
 
-GLFWwindow* MainWindow::exec(GLFWkeyfun keyCallback) {
-	MainWindow* window = new MainWindow(WindowConfig::WIDTH, WindowConfig::HEIGHT, WindowConfig::TITLE, keyCallback);
+	window->bindKeyCallBack(MainWindowSpecs::KEY_CALLBACK);
 
 	return window->context;
 }

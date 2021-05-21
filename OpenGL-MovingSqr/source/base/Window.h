@@ -8,9 +8,9 @@
 
 class Window {
 protected:
-	Window(int width, int height, const char* title, GLFWkeyfun keyCallback);
+	Window(int width, int height, const char* title);
 
-	void setKeyCallBack(GLFWwindow* window, GLFWkeyfun cbfun); // TODO: test set key callback in another app's state.
+	void bindKeyCallBack(GLFWkeyfun cbfun);
 
 	GLFWwindow* context;
 
@@ -23,7 +23,11 @@ private:
 
 };
 
-Window::Window(int width, int height, const char* title, GLFWkeyfun keyCallback) {
+void Window::bindKeyCallBack(GLFWkeyfun cbfun) {
+	glfwSetKeyCallback(this->context, cbfun);
+}
+
+Window::Window(int width, int height, const char* title) {
 	glfwInit();
 
 	// Setting up OpenGL
@@ -36,8 +40,6 @@ Window::Window(int width, int height, const char* title, GLFWkeyfun keyCallback)
 	this->context = glfwCreateWindow(width, height, title, nullptr, nullptr);
 
 	glfwMakeContextCurrent(context);
-
-	glfwSetKeyCallback(context, keyCallback); // TODO: test set key callback in another app's state.
 
 	glewExperimental = GL_TRUE;
 	glewInit();

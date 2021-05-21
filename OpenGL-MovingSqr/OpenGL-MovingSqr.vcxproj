@@ -149,7 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\base\Window.h" />
-    <ClInclude Include="source\const\WindowConfig.h" />
+    <ClInclude Include="source\specs\MainWindowSpecs.h" />
     <ClInclude Include="source\core\Application.h" />
     <ClInclude Include="source\core\MainLoop.h" />
     <ClInclude Include="source\core\MainWindow.h" />
@@ -158,6 +158,7 @@
     <ClInclude Include="source\file\File.h" />
     <ClInclude Include="source\input\Handler.h" />
     <ClInclude Include="source\input\Keys.h" />
+    <ClInclude Include="source\structs.h" />
     <ClInclude Include="source\type\Type.h" />
     <ClInclude Include="source\util\Path.h" />
     <ClInclude Include="source\util\Utils.h" />

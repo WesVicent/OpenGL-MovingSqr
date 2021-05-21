@@ -50,13 +50,16 @@
     <ClInclude Include="source\core\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\const\WindowConfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\core\MainLoop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\core\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\structs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\specs\MainWindowSpecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

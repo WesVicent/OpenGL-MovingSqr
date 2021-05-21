@@ -1,5 +1,5 @@
 /**
-	Created by: Wes Ferreira 2020-01-05
+	Created by: Wes Ferreira 2021-05-21
 */
 
 #pragma once
@@ -15,30 +15,32 @@ public:
 	GLFWwindow* windowContext;
 	Entity::Player* player;
 
-	static Application* getInstance(GLFWkeyfun keyCallback, bool keypool[349], Entity::EnabledKey* enabledKeys);
+	static Application* getInstance();
 	~Application();
 
 private:
 	static Application* instance;
-	Application(GLFWkeyfun keyCallback, bool keypool[349], Entity::EnabledKey* enabledKeys);
+
+	Application();
 
 };
 Application* Application::instance = 0;
 
-Application* Application::getInstance(GLFWkeyfun keyCallback, bool keypool[349], Entity::EnabledKey* enabledKeys) {
-	if (instance == 0) {
-		instance = new Application(keyCallback, keypool, enabledKeys);
-	}
 
-	return instance;
-}
-
-Application::Application(GLFWkeyfun keyCallback, bool keypool[349], Entity::EnabledKey* enabledKeys) {
-	this->windowContext = MainWindow::exec(keyCallback);
+Application::Application() {
+	this->windowContext = MainWindow::exec();
 
 	this->player = new Entity::Player();
 
-	MainLoop::exec(this->windowContext, this->player, keypool, enabledKeys);
+	MainLoop::exec(this->windowContext, this->player);
+}
+
+Application* Application::getInstance() {
+	if (instance == 0) {
+		instance = new Application();
+	}
+
+	return instance;
 }
 
 Application::~Application() {
