@@ -148,11 +148,11 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\base\Window.h" />
-    <ClInclude Include="source\specs\MainWindowSpecs.h" />
+    <ClInclude Include="source\core\window\Window.h" />
+    <ClInclude Include="source\core\window\MainWindowSpecs.h" />
     <ClInclude Include="source\core\Application.h" />
     <ClInclude Include="source\core\MainLoop.h" />
-    <ClInclude Include="source\core\MainWindow.h" />
+    <ClInclude Include="source\core\window\MainWindow.h" />
     <ClInclude Include="source\entity\Entity.h" />
     <ClInclude Include="source\entity\player\Player.h" />
     <ClInclude Include="source\file\File.h" />

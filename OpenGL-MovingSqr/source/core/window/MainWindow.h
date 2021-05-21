@@ -6,10 +6,10 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "../base/Window.h";
-#include "../specs/MainWindowSpecs.h";
+#include "Window.h";
+#include "MainWindowSpecs.h";
 
-class MainWindow : public Window {
+class MainWindow : public Window, public MainWindowSpecs {
 protected:
 
 public:
@@ -27,7 +27,7 @@ MainWindow::MainWindow(int width, int height, const char* title) :Window(width, 
 GLFWwindow* MainWindow::exec() {
 	MainWindow* window = new MainWindow(MainWindowSpecs::WIDTH, MainWindowSpecs::HEIGHT, MainWindowSpecs::TITLE);
 
-	window->bindKeyCallBack(MainWindowSpecs::KEY_CALLBACK);
+	window->bindKeyCallBack(KEY_CALLBACK);
 
 	return window->context;
 }

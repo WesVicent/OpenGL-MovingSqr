@@ -15,6 +15,7 @@ public:
 	static bool keypool[349];
 	static EnabledKeys enabledKeys;
 
+protected:
 	static void KEY_CALLBACK(GLFWwindow* window, int key, int scancoe, int action, int mode);
 };
 

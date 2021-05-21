@@ -6,7 +6,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "MainWindow.h"
+#include "window/MainWindow.h"
 #include "MainLoop.h"
 
 class Application { // Singleton

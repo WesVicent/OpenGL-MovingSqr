@@ -44,12 +44,6 @@
     <ClInclude Include="source\entity\player\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\base\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\core\MainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="source\core\MainLoop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -59,7 +53,13 @@
     <ClInclude Include="source\structs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\specs\MainWindowSpecs.h">
+    <ClInclude Include="source\core\window\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\window\MainWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\window\MainWindowSpecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
