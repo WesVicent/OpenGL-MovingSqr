@@ -9,30 +9,32 @@
 #include "Window.h";
 #include "MainWindowSpecs.h";
 
-class MainWindow : public Window, public MainWindowSpecs {
-protected:
 
-public:
-	static GLFWwindow* exec();
-	
-	~MainWindow();
+namespace MainWindow {
+	class Entity : public Window, public MainWindowSpecs {
+	protected:
 
-private:
-	MainWindow(int width, int height, const char* title);
+	public:
+		static GLFWwindow* init();
 
-};
+		~Entity();
 
-MainWindow::MainWindow(int width, int height, const char* title) :Window(width, height, title) { }
+	private:
+		Entity(int width, int height, const char* title);
 
-GLFWwindow* MainWindow::exec() {
-	MainWindow* window = new MainWindow(MainWindowSpecs::WIDTH, MainWindowSpecs::HEIGHT, MainWindowSpecs::TITLE);
+	};
 
-	window->bindKeyCallBack(KEY_CALLBACK);
+	Entity::Entity(int width, int height, const char* title) :Window(width, height, title) { }
 
-	return window->context;
-}
+	GLFWwindow* Entity::init() {
+		MainWindow::Entity* window = new MainWindow::Entity(MainWindowSpecs::WIDTH, MainWindowSpecs::HEIGHT, MainWindowSpecs::TITLE);
 
-MainWindow::~MainWindow() {
+		window->bindKeyCallBack(KEY_CALLBACK);
+
+		return window->context;
+	}
+
+	Entity::~Entity() { }
 }
 
 #endif // !MAIN_WINDOW_H

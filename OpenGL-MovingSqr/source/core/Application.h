@@ -13,7 +13,7 @@ class Application { // Singleton
 protected:
 public:
 	GLFWwindow* windowContext;
-	Entity::Player* player;
+	Player* player;
 
 	static Application* getInstance();
 	~Application();
@@ -28,11 +28,9 @@ Application* Application::instance = 0;
 
 
 Application::Application() {
-	this->windowContext = MainWindow::exec();
+	this->windowContext = MainWindow::Entity::init();
 
-	this->player = new Entity::Player();
-
-	MainLoop::exec(this->windowContext, this->player);
+	MainLoop::Entity::init(this->windowContext);
 }
 
 Application* Application::getInstance() {
@@ -44,6 +42,7 @@ Application* Application::getInstance() {
 }
 
 Application::~Application() {
+	glfwTerminate();
 }
 
 #endif // !APPLICATION_H

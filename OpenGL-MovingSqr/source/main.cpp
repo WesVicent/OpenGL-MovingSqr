@@ -10,12 +10,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "structs.h"
-#include "util/Path.h"
-#include "file/File.h"
-#include "input/Handler.h"
-#include "input/Keys.h"
-#include "entity/player/Player.h"
+// TODO: Manage includes.
+#include "util/Utils.h"
+#include "handlers/File.h"
+#include "handlers/Input.h"
+#include "g_unit/Units.h"
+#include "g_unit/player/Player.h"
 #include "core/Application.h"
 
 #include <SOIL.h>

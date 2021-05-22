@@ -5,34 +5,49 @@
 #pragma once
 #ifndef MAIN_LOOP_H
 #define MAIN_LOOP_H
+namespace MainLoop {
+	class Entity {
+	protected:
 
-class MainLoop {
-protected:
+	public:
+		static void init(GLFWwindow* context);
+	private:
 
-public:
-	static void exec(GLFWwindow* context, Entity::Player* player);
-private:
+	};
 
-};
+	void Entity::init(GLFWwindow* context) {
+		//Player* player = new Player();
 
-void MainLoop::exec(GLFWwindow* context, Entity::Player* player) {
-	while (!glfwWindowShouldClose(context)) {
-		glfwPollEvents();
+		G::UNITS::prepare();
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		while (!glfwWindowShouldClose(context)) {
+			glfwPollEvents();
 
-		if (MainWindowSpecs::keypool != nullptr) {
-			player->allowMovements(MainWindowSpecs::enabledKeys);
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			if (MainWindowSpecs::keypool != nullptr) {
+				for (int i = 0; i < G::UNIT_COUNT; i++) {
+					G::UNIT_POOL[i]->allowMovements(MainWindowSpecs::enabledKeys);
+				}
+
+				//player->allowMovements(MainWindowSpecs::enabledKeys);
+			}
+
+			for (int i = 0; i < G::UNIT_COUNT; i++) {
+				G::UNIT_POOL[i]->draw();
+			}
+
+			//player->draw();
+
+			glfwSwapBuffers(context);
 		}
 
-		player->draw();
+		for (int i = 0; i < G::UNIT_COUNT; i++) {
+			delete G::UNIT_POOL[i];
+		}
 
-		glfwSwapBuffers(context);
+		//delete player;
 	}
-
-	delete player;
-
-	glfwTerminate();
 }
 #endif // !MAIN_LOOP_H
 

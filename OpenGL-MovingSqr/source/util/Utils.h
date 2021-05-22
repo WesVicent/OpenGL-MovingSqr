@@ -1,6 +1,11 @@
 #pragma once
 #ifndef UTILS_H
 #define UTILS_H
+
+#include "Path.h"
+#include "namespaces/MainWindow.h"
+#include "namespaces/Input.h"
+
 struct Utils {
 
 	// Handmade "strcpy" by Paker
@@ -15,4 +20,11 @@ struct Utils {
 		return dest;
 	}
 };
+
+// USEFUL STRUCTS
+struct Coordinates {
+	float x;
+	float y;
+};
+/////////////////
 #endif // !UTILS_H

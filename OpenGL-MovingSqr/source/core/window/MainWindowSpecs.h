@@ -13,7 +13,7 @@ public:
 	static const char* TITLE;
 
 	static bool keypool[349];
-	static EnabledKeys enabledKeys;
+	static MainWindow::EnabledKeys enabledKeys;
 
 protected:
 	static void KEY_CALLBACK(GLFWwindow* window, int key, int scancoe, int action, int mode);
@@ -21,7 +21,7 @@ protected:
 
 // STATIC INIT
 const char* MainWindowSpecs::TITLE = "WesFerreira OpenGL";
-EnabledKeys MainWindowSpecs::enabledKeys = EnabledKeys();
+MainWindow::EnabledKeys MainWindowSpecs::enabledKeys = MainWindow::EnabledKeys();
 bool MainWindowSpecs::keypool[349] = {};
 //////////////
 
