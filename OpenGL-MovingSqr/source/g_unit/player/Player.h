@@ -10,6 +10,7 @@ class Player : public G::Unit {
 public:
 	bool canMove = false;
 	//
+	Player(float x, float y);
 	Player();
 	~Player();
 	void virtual allowMovements(MainWindow::EnabledKeys key);
@@ -22,30 +23,40 @@ private:
 	unsigned int VAO, VBO, IBO;
 	glm::mat4 movement = glm::mat4(1.0);
 
-	float vertices[12] = {
-		-0.05f, -0.05f, 0.0f,
-		 0.05f, -0.05f, 0.0f,
-		 0.05f,  0.05f, 0.0f,
-		-0.05f,  0.05f, 0.0f
-	}; // Default vertices
-	unsigned int indices[6] = {
-		0, 1, 2,
-		2, 3, 0
-	}; // Default indices
+	float bufferData[56] = {
+		// Position				// Color
+		-0.05f, 0.0f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
+		0.0f, 0.0f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
+		0.0f, 0.05f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
+		-0.05f, 0.05f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
 
-	//
-	void checkMovementCall(MainWindow::EnabledKeys key);
-	Coordinates calculateMovements(MainWindow::EnabledKeys key);
+		0.05f, 0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
+		0.10f, 0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
+		0.10f, 0.05f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
+		0.05f, 0.05f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
+	}; // Default vertices
+
+	unsigned int indices[12] = {
+		0, 1, 2, 2, 3, 0,
+
+		4, 5, 6, 6, 7, 4
+	};
+
 	void processShaders();
 	void processBuffers();
+	void checkMovementCall(MainWindow::EnabledKeys key);
+	Coordinates calculateMovements(MainWindow::EnabledKeys key);
 };
 
-Player::Player() {
+Player::Player() :Player(0.0f, 0.0f) { }
+
+Player::Player(float x, float y) {
 	processShaders();
 	processBuffers();
 
 	glUseProgram(this->programShader);
 	this->u_movement = glGetUniformLocation(this->programShader, "transform");
+	this->movement = glm::translate(this->movement, glm::vec3(x, y, 0.0f)); // Default value when start.
 }
 
 Player::~Player() {
@@ -56,25 +67,27 @@ Player::~Player() {
 
 void Player::draw() {
 	glBindVertexArray(this->VAO);
-	glDrawElements(GL_TRIANGLE_STRIP, sizeof(this->indices), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, sizeof(this->indices), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
 void Player::processBuffers() {
-
 	glGenVertexArrays(1, &this->VAO);
-	glGenBuffers(1, &this->VBO);
-	glGenBuffers(1, &this->IBO);
-
 	glBindVertexArray(this->VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(this->vertices), this->vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glGenBuffers(1, &this->VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(this->bufferData), this->bufferData, GL_STATIC_DRAW);
+
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbinding VBO
 
+	glGenBuffers(1, &this->IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices), this->indices, GL_STATIC_DRAW);
 
@@ -121,7 +134,7 @@ void Player::allowMovements(MainWindow::EnabledKeys key) {
 
 		this->movement = glm::translate(this->movement, glm::vec3(calculated.x, calculated.y, 0.0f));
 
-	} else this->movement = glm::translate(this->movement, glm::vec3(0.0f, 0.0f, 0.0f)); // Default value when start.
+	}
 
 	glUseProgram(this->programShader);
 	glUniformMatrix4fv(this->u_movement, 1, GL_FALSE, glm::value_ptr(this->movement));
