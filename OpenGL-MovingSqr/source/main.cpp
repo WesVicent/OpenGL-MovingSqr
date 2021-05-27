@@ -22,9 +22,6 @@
 #include "g_unit/player/Player.h"
 #include "core/Application.h"
 
-
-#include <SOIL.h>
-
 void printGLSLErrors(GLuint* shader, GLint success);
 
 int main() {

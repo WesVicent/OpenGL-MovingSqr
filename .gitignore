@@ -23,3 +23,12 @@ Release
 *.vbproj.user
 ipch
 *sdf
+
+# JetBrains Files
+.idea
+
+# CMake
+cmake-build-*
+
+# MacOS
+.DS_Store
