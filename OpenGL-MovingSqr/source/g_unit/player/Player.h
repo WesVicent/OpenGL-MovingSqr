@@ -9,7 +9,7 @@
 #include "../../core/buffer/VertexBuffer.h"
 
 // TODO: extends private mode
-class Player : public G::Unit {
+class Player : public G::Primitive {
 public:
 	bool canMove = false;
 	//
@@ -42,7 +42,7 @@ Player::Player(float x, float y) {
 	processBuffers();
 
 	glUseProgram(this->programShader);
-	this->u_movement = glGetUniformLocation(this->programShader, "transform");
+	this->u_movement = glGetUniformLocation(this->programShader, "movement");
 	this->movement = glm::translate(this->movement, glm::vec3(x, y, 0.0f)); // Default value when start.
 }
 
@@ -84,6 +84,9 @@ void Player::processShaders() {
 	glCompileShader(fragmentShader);
 
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+
+	delete vertexShaderSource;
+	delete fragmentShaderSource;
 
 	// Linking shaders.
 	this->programShader = glCreateProgram();

@@ -5,6 +5,7 @@
 #include "Path.h"
 #include "namespaces/MainWindow.h"
 #include "namespaces/Input.h"
+#include "namespaces/G.h"
 
 struct Utils {
 
@@ -42,5 +43,6 @@ struct SqrData {
 
 	int size = 4 * sizeof(VertexData);
 };
+
 /////////////////
 #endif // !UTILS_H

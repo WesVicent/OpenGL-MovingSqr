@@ -5,10 +5,10 @@ layout (location = 1) in vec4 color;
 
 out vec4 sharedColor;
 
-uniform mat4 transform;
+uniform mat4 movement;
 
 void main() {
-	gl_Position = transform * vec4(position, 1.0f);
+	gl_Position = movement * vec4(position, 1.0f);
 
 	sharedColor = color;
 }

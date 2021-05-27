@@ -7,7 +7,6 @@
 #define VERTEX_BUFFER_H
 
 #include "Buffer.h"
-#include <iostream>
 
 class VertexBuffer {
 protected:
@@ -23,7 +22,7 @@ public:
 		8, 9, 10, 10, 11, 8
 	};
 
-	VertexBuffer(const std::function<void()> &append);
+	VertexBuffer(const std::function<void()> &whenBond);
 	virtual ~VertexBuffer();
 
 private:
@@ -31,12 +30,12 @@ private:
 
 };
 
-VertexBuffer::VertexBuffer(const std::function<void()> &append) {
+VertexBuffer::VertexBuffer(const std::function<void()> &whenBond) {
 	Buffer* buffer = new Buffer([&]() {
 		glGenVertexArrays(1, &this->id);
 		glBindVertexArray(this->id);
 
-		append();
+		whenBond();
 
 		glGenBuffers(1, &this->indiceBufferId);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indiceBufferId);

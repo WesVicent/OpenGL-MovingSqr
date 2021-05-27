@@ -6,8 +6,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "Window.h";
-#include "MainWindowSpecs.h";
+#include "Window.h"
+#include "MainWindowSpecs.h"
 
 
 namespace MainWindow {

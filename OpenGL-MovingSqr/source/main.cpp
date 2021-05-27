@@ -15,9 +15,10 @@
 
 // TODO: Manage includes.
 #include "util/Utils.h"
+#include "g_unit/Primitive.h"
 #include "handlers/File.h"
 #include "handlers/Input.h"
-#include "g_unit/Units.h"
+#include "g_unit/Batch.h"
 //#include "core/buffer/VertexBuffer.h"
 #include "g_unit/player/Player.h"
 #include "core/Application.h"

@@ -16,37 +16,39 @@ namespace MainLoop {
 	};
 
 	void Entity::init(GLFWwindow* context) {
-		//Player* player = new Player();
 
-		//G::UNITS::prepare();
+		std::unique_ptr<G::Batch> batch = std::make_unique<G::Batch>(); // TODO: Implement more than one batch.
+
+		batch->processShaders(); // TODO: Implement a default shader.
+
+		auto quad = G::Primitive::createSqr(0.0f, 0.0f);
+		auto quad1 = G::Primitive::createSqr(0.10f, 0.0f);
+		auto quad2 = G::Primitive::createSqr(0.20f, 0.0f);
+
+		batch->add(quad);
+		batch->add(quad1);
+		batch->add(quad2);
 
 		while (!glfwWindowShouldClose(context)) {
 			glfwPollEvents();
 
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			if (MainWindowSpecs::keypool != nullptr) {
-				for (int i = 0; i < G::UNIT_MAX_COUNT; i++) {
-					G::UNIT_POOL[i]->allowMovements(MainWindowSpecs::enabledKeys);
-				}
 
-				//player->allowMovements(MainWindowSpecs::enabledKeys);
-			}
+			/*for (int i = 0; i < G::UNIT_POOL.size(); i++) {
+				if (G::UNIT_POOL[i] != 0)
+				G::UNIT_POOL[i]->allowMovements(MainWindowSpecs::enabledKeys);
+			}*/
 
-			for (int i = 0; i < G::UNIT_MAX_COUNT; i++) {
-				G::UNIT_POOL[i]->draw();
-			}
-
-			//player->draw();
+			batch->draw();
 
 			glfwSwapBuffers(context);
 		}
 
-		for (int i = 0; i < G::UNIT_MAX_COUNT; i++) {
+		for (int i = 0; i < G::UNIT_POOL.size(); i++) {
 			delete G::UNIT_POOL[i];
 		}
 
-		//delete player;
 	}
 }
 #endif // !MAIN_LOOP_H

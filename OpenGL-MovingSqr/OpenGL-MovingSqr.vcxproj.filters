@@ -56,10 +56,10 @@
     <ClInclude Include="source\g_unit\player\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\g_unit\GUnit.h">
+    <ClInclude Include="source\g_unit\Primitive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\g_unit\Units.h">
+    <ClInclude Include="source\g_unit\Batch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\g_unit\Square.h">
@@ -69,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\core\buffer\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\util\namespaces\G.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
