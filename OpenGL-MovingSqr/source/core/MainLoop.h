@@ -18,7 +18,7 @@ namespace MainLoop {
 	void Entity::init(GLFWwindow* context) {
 		//Player* player = new Player();
 
-		G::UNITS::prepare();
+		//G::UNITS::prepare();
 
 		while (!glfwWindowShouldClose(context)) {
 			glfwPollEvents();
@@ -26,14 +26,14 @@ namespace MainLoop {
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			if (MainWindowSpecs::keypool != nullptr) {
-				for (int i = 0; i < G::UNIT_COUNT; i++) {
+				for (int i = 0; i < G::UNIT_MAX_COUNT; i++) {
 					G::UNIT_POOL[i]->allowMovements(MainWindowSpecs::enabledKeys);
 				}
 
 				//player->allowMovements(MainWindowSpecs::enabledKeys);
 			}
 
-			for (int i = 0; i < G::UNIT_COUNT; i++) {
+			for (int i = 0; i < G::UNIT_MAX_COUNT; i++) {
 				G::UNIT_POOL[i]->draw();
 			}
 
@@ -42,7 +42,7 @@ namespace MainLoop {
 			glfwSwapBuffers(context);
 		}
 
-		for (int i = 0; i < G::UNIT_COUNT; i++) {
+		for (int i = 0; i < G::UNIT_MAX_COUNT; i++) {
 			delete G::UNIT_POOL[i];
 		}
 

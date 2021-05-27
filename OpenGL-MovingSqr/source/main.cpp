@@ -1,6 +1,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <array>
+#include <vector>
+#include <memory>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -15,8 +18,10 @@
 #include "handlers/File.h"
 #include "handlers/Input.h"
 #include "g_unit/Units.h"
+//#include "core/buffer/VertexBuffer.h"
 #include "g_unit/player/Player.h"
 #include "core/Application.h"
+
 
 #include <SOIL.h>
 

@@ -6,6 +6,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "../../core/buffer/VertexBuffer.h"
+
+// TODO: extends private mode
 class Player : public G::Unit {
 public:
 	bool canMove = false;
@@ -20,27 +23,11 @@ private:
 	unsigned int programShader;
 	const float velocity = 0.0002f;
 	int u_movement;
-	unsigned int VAO, VBO, IBO;
+	//unsigned int VAO, VBO, IBO;
 	glm::mat4 movement = glm::mat4(1.0);
 
-	float bufferData[56] = {
-		// Position				// Color
-		-0.05f, 0.0f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
-		0.0f, 0.0f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
-		0.0f, 0.05f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
-		-0.05f, 0.05f, 0.0f,		0.5f, 1.0f, 0.5f, 1.0,
+	std::unique_ptr<VertexBuffer> buffer;
 
-		0.05f, 0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
-		0.10f, 0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
-		0.10f, 0.05f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
-		0.05f, 0.05f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0,
-	}; // Default vertices
-
-	unsigned int indices[12] = {
-		0, 1, 2, 2, 3, 0,
-
-		4, 5, 6, 6, 7, 4
-	};
 
 	void processShaders();
 	void processBuffers();
@@ -60,38 +47,23 @@ Player::Player(float x, float y) {
 }
 
 Player::~Player() {
-	glDeleteVertexArrays(1, &this->VAO);
-	glDeleteBuffers(1, &this->VBO);
-	glDeleteBuffers(1, &this->IBO);
 }
 
 void Player::draw() {
-	glBindVertexArray(this->VAO);
-	glDrawElements(GL_TRIANGLES, sizeof(this->indices), GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(this->buffer->id);
+	glDrawElements(GL_TRIANGLES, sizeof(this->buffer->indices), GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
 }
 
 void Player::processBuffers() {
-	glGenVertexArrays(1, &this->VAO);
-	glBindVertexArray(this->VAO);
+	buffer = std::make_unique<VertexBuffer>([&]() {
+		// Statements for when VertexBuffer is binded.
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)0);
 
-	glGenBuffers(1, &this->VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(this->bufferData), this->bufferData, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbinding VBO
-
-	glGenBuffers(1, &this->IBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices), this->indices, GL_STATIC_DRAW);
-
-	glBindVertexArray(0); // Unbinding VAO
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*) sizeof(glm::vec3));
+	});
 }
 
 void Player::processShaders() {

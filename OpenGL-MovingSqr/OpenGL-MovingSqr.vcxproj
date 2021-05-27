@@ -148,6 +148,8 @@
     <ClCompile Include="source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\core\buffer\Buffer.h" />
+    <ClInclude Include="source\core\buffer\VertexBuffer.h" />
     <ClInclude Include="source\core\window\Window.h" />
     <ClInclude Include="source\core\window\MainWindowSpecs.h" />
     <ClInclude Include="source\core\Application.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="source\core\window\MainWindow.h" />
     <ClInclude Include="source\g_unit\GUnit.h" />
     <ClInclude Include="source\g_unit\player\Player.h" />
+    <ClInclude Include="source\g_unit\Square.h" />
     <ClInclude Include="source\g_unit\Units.h" />
     <ClInclude Include="source\handlers\File.h" />
     <ClInclude Include="source\handlers\Input.h" />

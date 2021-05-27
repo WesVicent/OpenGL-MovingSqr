@@ -62,6 +62,15 @@
     <ClInclude Include="source\g_unit\Units.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\g_unit\Square.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\buffer\Buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\core\buffer\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\shaders\player.frag" />
