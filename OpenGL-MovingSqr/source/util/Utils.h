@@ -17,7 +17,6 @@ struct Utils {
 		if (dest != 0) {
 			memcpy(dest, src, size);
 		}
-
 		return dest;
 	}
 };

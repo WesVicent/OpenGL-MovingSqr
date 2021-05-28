@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="source\core\buffer\Buffer.h" />
     <ClInclude Include="source\core\buffer\VertexBuffer.h" />
+    <ClInclude Include="source\g_unit\Controllable.h" />
     <ClInclude Include="source\core\window\Window.h" />
     <ClInclude Include="source\core\window\MainWindowSpecs.h" />
     <ClInclude Include="source\core\Application.h" />

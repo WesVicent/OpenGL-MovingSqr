@@ -25,10 +25,11 @@ namespace MainLoop {
 		auto quad1 = G::Primitive::createSqr(0.10f, 0.0f);
 		auto quad2 = G::Primitive::createSqr(0.20f, 0.0f);
 
+
 		batch->add(quad);
 		batch->add(quad1);
 		batch->add(quad2);
-
+		
 		while (!glfwWindowShouldClose(context)) {
 			glfwPollEvents();
 
@@ -44,6 +45,7 @@ namespace MainLoop {
 
 			glfwSwapBuffers(context);
 		}
+		
 
 		for (int i = 0; i < G::UNIT_POOL.size(); i++) {
 			delete G::UNIT_POOL[i];

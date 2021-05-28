@@ -8,29 +8,24 @@
 
 #include "../../core/buffer/VertexBuffer.h"
 
-// TODO: extends private mode
-class Player : public G::Primitive {
+class Player : public G::Controllable {
 public:
 	bool canMove = false;
-	//
+	
+	void virtual allowMovements(MainWindow::EnabledKeys key);
+
 	Player(float x, float y);
 	Player();
 	~Player();
-	void virtual allowMovements(MainWindow::EnabledKeys key);
-	void virtual draw();
 
 private:
-	unsigned int programShader;
 	const float velocity = 0.0002f;
-	int u_movement;
-	//unsigned int VAO, VBO, IBO;
+	
 	glm::mat4 movement = glm::mat4(1.0);
+	
+	unsigned int programShader;
+	int u_movement;
 
-	std::unique_ptr<VertexBuffer> buffer;
-
-
-	void processShaders();
-	void processBuffers();
 	void checkMovementCall(MainWindow::EnabledKeys key);
 	Coordinates calculateMovements(MainWindow::EnabledKeys key);
 };
@@ -38,67 +33,10 @@ private:
 Player::Player() :Player(0.0f, 0.0f) { }
 
 Player::Player(float x, float y) {
-	processShaders();
-	processBuffers();
 
-	glUseProgram(this->programShader);
-	this->u_movement = glGetUniformLocation(this->programShader, "movement");
-	this->movement = glm::translate(this->movement, glm::vec3(x, y, 0.0f)); // Default value when start.
 }
 
 Player::~Player() {
-}
-
-void Player::draw() {
-	glBindVertexArray(this->buffer->id);
-	glDrawElements(GL_TRIANGLES, sizeof(this->buffer->indices), GL_UNSIGNED_INT, nullptr);
-	glBindVertexArray(0);
-}
-
-void Player::processBuffers() {
-	buffer = std::make_unique<VertexBuffer>([&]() {
-		// Statements for when VertexBuffer is binded.
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)0);
-
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*) sizeof(glm::vec3));
-	});
-}
-
-void Player::processShaders() {
-	const char* vertexShaderSource = File::Handler::read(Path::shaders + "player.vert");
-	const char* fragmentShaderSource = File::Handler::read(Path::shaders + "player.frag");
-
-	GLuint vertexShader, fragmentShader;
-	GLint success;
-
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-	delete vertexShaderSource;
-	delete fragmentShaderSource;
-
-	// Linking shaders.
-	this->programShader = glCreateProgram();
-	glAttachShader(this->programShader, vertexShader);
-	glAttachShader(this->programShader, fragmentShader);
-	glLinkProgram(this->programShader);
-
-	glGetProgramiv(this->programShader, GL_LINK_STATUS, &success);
-
-	// Cleaning shaders.
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 }
 
 void Player::allowMovements(MainWindow::EnabledKeys key) {
@@ -108,7 +46,6 @@ void Player::allowMovements(MainWindow::EnabledKeys key) {
 		Coordinates calculated = calculateMovements(key);
 
 		this->movement = glm::translate(this->movement, glm::vec3(calculated.x, calculated.y, 0.0f));
-
 	}
 
 	glUseProgram(this->programShader);

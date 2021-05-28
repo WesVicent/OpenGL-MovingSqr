@@ -13,7 +13,6 @@ class Application { // Singleton
 protected:
 public:
 	GLFWwindow* windowContext;
-	Player* player;
 
 	static Application* getInstance();
 	~Application();

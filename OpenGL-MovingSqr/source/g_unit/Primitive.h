@@ -1,10 +1,12 @@
 /**
-	Re-created by: Wes Ferreira 2021-05-21
+	created by: Wes Ferreira 2021-05-27
 */
 
 #pragma once
 #ifndef PRIMITIVE_H
 #define PRIMITIVE_H
+
+#include "Controllable.h"
 
 namespace G {
 
@@ -13,9 +15,6 @@ namespace G {
 
 	public:
 		static SqrData createSqr(float x, float y);
-
-		void virtual allowMovements(MainWindow::EnabledKeys key) = 0;
-		void virtual draw() = 0;
 
 		virtual ~Primitive() {}; //TODO:
 
