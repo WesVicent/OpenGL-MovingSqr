@@ -62,7 +62,7 @@
     <ClInclude Include="source\g_unit\Batch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\g_unit\Square.h">
+    <ClInclude Include="source\g_unit\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\core\buffer\Buffer.h">

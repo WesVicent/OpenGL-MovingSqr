@@ -8,26 +8,28 @@
 
 #include "Window.h"
 #include "MainWindowSpecs.h"
-
+#include "../../g_unit/Renderer.h"
 
 namespace MainWindow {
+
+	std::unique_ptr<Renderer::Entity> renderer;
+
 	class Entity : public Window, public MainWindowSpecs {
 	protected:
 
 	public:
 		static GLFWwindow* init();
 
-		~Entity();
-
-	private:
 		Entity(int width, int height, const char* title);
+		~Entity();
+	private:
 
 	};
 
 	Entity::Entity(int width, int height, const char* title) :Window(width, height, title) { }
 
 	GLFWwindow* Entity::init() {
-		MainWindow::Entity* window = new MainWindow::Entity(MainWindowSpecs::WIDTH, MainWindowSpecs::HEIGHT, MainWindowSpecs::TITLE);
+		std::unique_ptr<MainWindow::Entity> window = std::make_unique<MainWindow::Entity>(MainWindowSpecs::WIDTH, MainWindowSpecs::HEIGHT, MainWindowSpecs::TITLE);
 
 		window->bindKeyCallBack(KEY_CALLBACK);
 

@@ -160,7 +160,7 @@
     <ClInclude Include="source\core\window\MainWindow.h" />
     <ClInclude Include="source\g_unit\Primitive.h" />
     <ClInclude Include="source\g_unit\player\Player.h" />
-    <ClInclude Include="source\g_unit\Square.h" />
+    <ClInclude Include="source\g_unit\Renderer.h" />
     <ClInclude Include="source\g_unit\Batch.h" />
     <ClInclude Include="source\handlers\File.h" />
     <ClInclude Include="source\handlers\Input.h" />

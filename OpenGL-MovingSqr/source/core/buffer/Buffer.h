@@ -12,6 +12,8 @@ class Buffer {
 protected:
 
 public:
+	void init();
+
 	Buffer(const std::function<void()> &whenBond);
 
 	// Virtual destructor to compiler automagically call base destructor on child destructior.
@@ -21,6 +23,10 @@ private:
 	unsigned int id;
 
 };
+
+void Buffer::init() {
+
+}
 
 Buffer::Buffer(const std::function<void()> &whenBond) {
 	glGenBuffers(1, &this->id);

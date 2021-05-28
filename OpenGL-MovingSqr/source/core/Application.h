@@ -28,6 +28,17 @@ Application* Application::instance = 0;
 
 Application::Application() {
 	this->windowContext = MainWindow::Entity::init();
+	
+	MainWindow::renderer = Renderer::Entity::init();
+
+	auto quad = G::Primitive::createSqr(0.0f, 0.0f);
+	auto quad1 = G::Primitive::createSqr(0.10f, 0.0f);
+	auto quad2 = G::Primitive::createSqr(0.20f, 0.0f);
+
+	MainWindow::renderer->batch->add(quad);
+	MainWindow::renderer->batch->add(quad1);
+	MainWindow::renderer->batch->add(quad2);
+	MainWindow::renderer->callUpdate();
 
 	MainLoop::Entity::init(this->windowContext);
 }
@@ -42,6 +53,9 @@ Application* Application::getInstance() {
 
 Application::~Application() {
 	glfwTerminate();
+
+	delete[] windowContext;
+	delete instance;
 }
 
 #endif // !APPLICATION_H

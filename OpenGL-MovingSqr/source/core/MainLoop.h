@@ -16,20 +16,6 @@ namespace MainLoop {
 	};
 
 	void Entity::init(GLFWwindow* context) {
-
-		std::unique_ptr<G::Batch> batch = std::make_unique<G::Batch>(); // TODO: Implement more than one batch.
-
-		batch->processShaders(); // TODO: Implement a default shader.
-
-		auto quad = G::Primitive::createSqr(0.0f, 0.0f);
-		auto quad1 = G::Primitive::createSqr(0.10f, 0.0f);
-		auto quad2 = G::Primitive::createSqr(0.20f, 0.0f);
-
-
-		batch->add(quad);
-		batch->add(quad1);
-		batch->add(quad2);
-		
 		while (!glfwWindowShouldClose(context)) {
 			glfwPollEvents();
 
@@ -41,7 +27,7 @@ namespace MainLoop {
 				G::UNIT_POOL[i]->allowMovements(MainWindowSpecs::enabledKeys);
 			}*/
 
-			batch->draw();
+			if (MainWindow::renderer->update) MainWindow::renderer->draw();
 
 			glfwSwapBuffers(context);
 		}
