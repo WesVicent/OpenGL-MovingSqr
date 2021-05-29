@@ -11,6 +11,8 @@ namespace G {
 	const int VERTEX_MAX_AMOUNT = 4;
 
 	int VERTICES_COUNT = 0;
+
+	std::vector<unsigned int> INDICES;
 }
 
 #endif // !G_H

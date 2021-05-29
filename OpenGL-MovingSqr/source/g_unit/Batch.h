@@ -18,7 +18,6 @@ namespace G {
 
 		static void add(SqrData unit);
 		
-		//void draw();
 		void processShaders();
 
 		Batch();
@@ -35,15 +34,22 @@ namespace G {
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)sizeof(glm::vec3));
 		});
 
-		processShaders(); // TODO: Implement a default shader.
+		//processShaders(); // TODO: Implement a default shader.
 	}
 
 	void Batch::add(SqrData unit) {
-		G::POOL.push_back(unit); // This element "G::POOL" could belong to that class.
+		//G::POOL.push_back(unit); // This element "G::POOL" could belong to that class.
 
 		memcpy(G::VERTICES + G::VERTICES_COUNT, unit.vertices.data(), unit.size);
-
+		
 		G::VERTICES_COUNT += unit.vertices.size();
+
+		for(int i = 0; i < unit.indices.size(); i++) {
+			unit.indices.at(i) += G::VERTICES_COUNT;
+		}
+
+		// std::copy() delegates the calls to memmove() when the type is TriviallyCopyable.
+		std::copy(unit.indices.begin(), unit.indices.end(), std::back_inserter(G::INDICES));
 	}
 
 	void Batch::processShaders() {

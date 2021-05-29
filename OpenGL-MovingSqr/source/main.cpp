@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -26,6 +27,7 @@
 void printGLSLErrors(GLuint* shader, GLint success);
 
 int main() {
+
 	Application* app = Application::getInstance();
 
 	return 0;
