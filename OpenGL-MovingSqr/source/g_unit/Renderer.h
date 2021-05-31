@@ -25,7 +25,6 @@ namespace Renderer {
 		const float cameraVelocity = 0.0002f;
 
 		bool update = false;
-		glm::mat4 cameraPosition = glm::mat4(1.0);
 		std::vector<std::shared_ptr<G::Batch>> batches;
 		std::vector<std::shared_ptr<G::Controllable>> unities;
 
@@ -39,9 +38,9 @@ namespace Renderer {
 		if(canMove) {
 			Coordinates calculated = calculateMovements(key);
 
-			cameraPosition = glm::translate(this->cameraPosition, glm::vec3(calculated.x, calculated.y, 0.0f));
+			batches[0]->cameraPosition = glm::translate(batches[0]->cameraPosition, glm::vec3(calculated.x, calculated.y, 0.0f));
 
-			batches[0]->updateUniforms(cameraPosition);
+			batches[0]->updateUniforms(batches[0]->cameraPosition);
 		}
 	}
 
@@ -49,32 +48,32 @@ namespace Renderer {
 		float x = 0.0f;
 		float y = 0.0f;
 
-		if(key.d) {
-			if(key.w) {
+		if(key.a) {
+			if(key.s) {
 				x = cameraVelocity;
 				y = cameraVelocity;
-			} else if(key.s) {
+			} else if(key.w) {
 				x = cameraVelocity;
 				y = cameraVelocity / -2;
 			} else {
 				x = cameraVelocity;
 				y = 0.0f;
 			}
-		} else if(key.a) {
-			if(key.w) {
+		} else if(key.d) {
+			if(key.s) {
 				x = cameraVelocity * -1;
 				y = cameraVelocity / 2;
-			} else if(key.s) {
+			} else if(key.w) {
 				x = cameraVelocity * -1;
 				y = cameraVelocity / -2;
 			} else {
 				x = cameraVelocity * -1;
 				y = 0.0f;
 			}
-		} else if(key.w) {
+		} else if(key.s) {
 			x = 0.0f;
 			y = cameraVelocity;
-		} else if(key.s) {
+		} else if(key.w) {
 			x = 0.0f;
 			y = cameraVelocity * -1;
 		}

@@ -15,6 +15,7 @@ namespace G {
 	public:
 		bool isDynamic = false;
 		int VERTICES_COUNT = 0;
+		glm::mat4 cameraPosition = glm::mat4(1.0);
 		std::unique_ptr<VertexBuffer> buffer;
 		std::vector<unsigned int> INDICES;
 		std::array<std::shared_ptr<G::Primitive>, 3> UNIT_POOL; // TODO: UNIT_MAX_COUNT
@@ -86,10 +87,10 @@ namespace G {
 	void Batch::processUniforms() {
 		glUseProgram(programShader);
 		int u_movement = glGetUniformLocation(programShader, "movement");
-		glm::mat4 movement = glm::mat4(1.0);
-		movement = glm::translate(movement, glm::vec3(0.5f, 0.0f, 0.0f));
 
-		glUniformMatrix4fv(u_movement, 1, GL_FALSE, glm::value_ptr(movement));
+		cameraPosition = glm::translate(cameraPosition, glm::vec3(0.5f, 0.0f, 0.0f));
+
+		glUniformMatrix4fv(u_movement, 1, GL_FALSE, glm::value_ptr(cameraPosition));
 	}
 
 	void Batch::add(SqrData unit) {

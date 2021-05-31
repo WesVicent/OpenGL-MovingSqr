@@ -60,7 +60,6 @@ void Player::allowMovements(MainWindow::EnabledKeys key) {
 		this->movement = glm::translate(this->movement, glm::vec3(calculated.x, calculated.y, 0.0f));
 		
 		batch->updateBuffer();
-		batch->updateUniforms(movement);
 	}
 }
 
