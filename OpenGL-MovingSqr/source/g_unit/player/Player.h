@@ -23,8 +23,8 @@ private:
 	
 	glm::mat4 movement = glm::mat4(1.0);
 	
-	unsigned int programShader;
 	int u_movement;
+	std::shared_ptr<G::Batch> batch;
 
 	void checkMovementCall(MainWindow::EnabledKeys key);
 	Coordinates calculateMovements(MainWindow::EnabledKeys key);
@@ -33,7 +33,15 @@ private:
 Player::Player() :Player(0.0f, 0.0f) { }
 
 Player::Player(float x, float y) {
+	auto quad = G::Primitive::createSqr(0.0f + x, 0.0f + y);
+	auto quad1 = G::Primitive::createSqr(0.10f + x, 0.0f + y);
 
+	batch = std::make_shared<G::Batch>();
+
+	batch->add(quad);
+	batch->add(quad1);
+
+	MainWindow::renderer->add(batch);
 }
 
 Player::~Player() {
@@ -45,11 +53,15 @@ void Player::allowMovements(MainWindow::EnabledKeys key) {
 	if (this->canMove) {
 		Coordinates calculated = calculateMovements(key);
 
-		this->movement = glm::translate(this->movement, glm::vec3(calculated.x, calculated.y, 0.0f));
-	}
+		for(int i = 0; i < batch->VERTICES_COUNT; i++) {
+			batch->VERTICES[i].position = glm::vec3(batch->VERTICES[i].position.x + calculated.x, batch->VERTICES[i].position.y + calculated.y, 1.0f);
+		}
 
-	glUseProgram(this->programShader);
-	glUniformMatrix4fv(this->u_movement, 1, GL_FALSE, glm::value_ptr(this->movement));
+		this->movement = glm::translate(this->movement, glm::vec3(calculated.x, calculated.y, 0.0f));
+		
+		batch->updateBuffer();
+		batch->updateUniforms(movement);
+	}
 }
 
 void Player::checkMovementCall(MainWindow::EnabledKeys key) {

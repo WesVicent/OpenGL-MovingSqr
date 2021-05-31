@@ -8,6 +8,8 @@
 
 #include "window/MainWindow.h"
 #include "MainLoop.h"
+//
+#include "g_unit/player/Player.h"
 
 class Application { // Singleton
 protected:
@@ -28,23 +30,22 @@ Application* Application::instance = 0;
 
 Application::Application() {
 	this->windowContext = MainWindow::Entity::init();
-
 	MainWindow::renderer = Renderer::Entity::init();
 
+	std::vector<glm::vec4> gradient { 
+		glm::vec4 { 1.0f, 0.372f, 0.427f, 1.0f },
+		glm::vec4 { 1.0f, 0.372f, 0.427f, 1.0f },
+		glm::vec4 { 1.0f, 0.764f, 0.443f, 1.0f },
+		glm::vec4 { 1.0f, 0.764f, 0.443f, 1.0f }
+	};
+	auto quad2 = G::Primitive::createSqr(0.20f, 0.0f, gradient);
 
-	auto quad = G::Primitive::createSqr(0.0f, 0.0f);
-	auto quad1 = G::Primitive::createSqr(0.10f, 0.0f);
-	auto quad2 = G::Primitive::createSqr(0.20f, 0.0f);
+	std::shared_ptr<G::Batch> batch2 = std::make_shared<G::Batch>(quad2);
 
-	MainWindow::renderer->add(quad);
-	MainWindow::renderer->add(quad1);
-	MainWindow::renderer->add(quad2);
-	
-	MainWindow::renderer->fillBuffer();
-	MainWindow::renderer->callUpdate();
+	std::shared_ptr player = std::make_shared<Player>(0.0f, 0.0f);
 
-	MainWindow::renderer->batch->processShaders();
-	MainWindow::renderer->updateUniforms();
+	MainWindow::renderer->addUnit(player);
+	MainWindow::renderer->add(batch2);
 
 	MainLoop::Entity::init(this->windowContext);
 }
@@ -60,7 +61,6 @@ Application* Application::getInstance() {
 Application::~Application() {
 	glfwTerminate();
 
-	delete[] windowContext;
 	delete instance;
 }
 

@@ -8,6 +8,11 @@ namespace MainWindow {
 		bool left;
 		bool up;
 		bool down;
+
+		bool d;
+		bool a;
+		bool w;
+		bool s;
 	};
 }
 

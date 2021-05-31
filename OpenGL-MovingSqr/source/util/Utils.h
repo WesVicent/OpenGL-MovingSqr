@@ -27,12 +27,17 @@ struct Coordinates {
 	float y;
 };
 
+struct BufferData {
+	size_t size;
+	void* ref;
+};
+
 struct VertexData {
 	glm::vec3 position;
 	glm::vec4 color;
 };
 
- struct SqrData {
+struct SqrData {
 	VertexData v0;
 	VertexData v1;
 	VertexData v2;

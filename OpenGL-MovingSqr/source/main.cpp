@@ -20,8 +20,6 @@
 #include "handlers/File.h"
 #include "handlers/Input.h"
 #include "g_unit/Batch.h"
-//#include "core/buffer/VertexBuffer.h"
-#include "g_unit/player/Player.h"
 #include "core/Application.h"
 
 void printGLSLErrors(GLuint* shader, GLint success);

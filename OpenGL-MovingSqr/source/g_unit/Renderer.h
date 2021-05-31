@@ -10,64 +10,113 @@ namespace Renderer {
 
 	class Entity {
 	public:
-		std::unique_ptr<G::Batch> batch;
-		bool update = false;
-
 		static std::unique_ptr<Renderer::Entity> init();
 
-		void add(SqrData unit);
+		void add(std::shared_ptr<G::Batch> batch);
+		void addUnit(std::shared_ptr<G::Controllable> unit);
 		void fillBuffer();
 		void draw();
-		void updateUniforms();
-		void callUpdate();
+		bool callUpdate();
+		void updatePositions();
+
 		Entity();
+
 	private:
+		const float cameraVelocity = 0.0002f;
+
+		bool update = false;
+		glm::mat4 cameraPosition = glm::mat4(1.0);
+		std::vector<std::shared_ptr<G::Batch>> batches;
+		std::vector<std::shared_ptr<G::Controllable>> unities;
+
+		void allowCameraMovements(MainWindow::EnabledKeys key);
+		Coordinates calculateMovements(MainWindow::EnabledKeys key);
 	};
 
-	void Entity::add(SqrData unit) {
-		for(int i = 0; i < unit.indices.size(); i++) {
-			unit.indices.at(i) += G::VERTICES_COUNT;
+	void Entity::allowCameraMovements(MainWindow::EnabledKeys key) {
+		bool canMove = key.d || key.a || key.w || key.s;
+
+		if(canMove) {
+			Coordinates calculated = calculateMovements(key);
+
+			cameraPosition = glm::translate(this->cameraPosition, glm::vec3(calculated.x, calculated.y, 0.0f));
+
+			batches[0]->updateUniforms(cameraPosition);
+		}
+	}
+
+	Coordinates Entity::calculateMovements(MainWindow::EnabledKeys key) {
+		float x = 0.0f;
+		float y = 0.0f;
+
+		if(key.d) {
+			if(key.w) {
+				x = cameraVelocity;
+				y = cameraVelocity;
+			} else if(key.s) {
+				x = cameraVelocity;
+				y = cameraVelocity / -2;
+			} else {
+				x = cameraVelocity;
+				y = 0.0f;
+			}
+		} else if(key.a) {
+			if(key.w) {
+				x = cameraVelocity * -1;
+				y = cameraVelocity / 2;
+			} else if(key.s) {
+				x = cameraVelocity * -1;
+				y = cameraVelocity / -2;
+			} else {
+				x = cameraVelocity * -1;
+				y = 0.0f;
+			}
+		} else if(key.w) {
+			x = 0.0f;
+			y = cameraVelocity;
+		} else if(key.s) {
+			x = 0.0f;
+			y = cameraVelocity * -1;
 		}
 
-		// std::copy() delegates the calls to memmove() when the type is TriviallyCopyable.
-		std::copy(unit.indices.begin(), unit.indices.end(), std::back_inserter(G::INDICES));
-		
-		//G::POOL.push_back(unit); // This element "G::POOL" could belong to that class.
-
-		memcpy(G::VERTICES + G::VERTICES_COUNT, unit.vertices.data(), unit.size);
-		G::VERTICES_COUNT += unit.vertices.size();
-
-
+		return Coordinates { x, y };
 	}
-
-	void Entity::fillBuffer() {
-		batch = std::make_unique<G::Batch>();
+	
+	void Entity::addUnit(std::shared_ptr<G::Controllable> unit) {
+		unities.push_back(unit);
+		update = true;
 	}
+	
+	void Entity::updatePositions() {
+		allowCameraMovements(MainWindowSpecs::enabledKeys);
 
-	void Entity::updateUniforms() {
-		glUseProgram(this->batch->programShader);
-		int u_movement = glGetUniformLocation(this->batch->programShader, "movement");
-		glm::mat4 movement = glm::mat4(1.0);
-		movement = glm::translate(movement, glm::vec3(0.5f, 0.0f, 0.0f));
-
-		glUniformMatrix4fv(u_movement, 1, GL_FALSE, glm::value_ptr(movement));
+		for(int i = 0; i < unities.size(); i++) {
+			unities[i]->allowMovements(MainWindowSpecs::enabledKeys);
+		}
 	}
-
-	void Entity::callUpdate() {
+	
+	void Entity::add(std::shared_ptr<G::Batch> batch) {
+		batches.push_back(batch);
 		update = true;
 	}
 
+	bool Entity::callUpdate() {
+		return update;
+	}
+
 	void Entity::draw() {
-		// LOOP
-		glBindBuffer(GL_ARRAY_BUFFER, this->batch->buffer->id);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(G::VERTICES), G::VERTICES, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// LOOP
+		for(int i = 0; i < batches.size(); i++) {
+			if(!batches[i]->isDynamic) {
+				glBindBuffer(GL_ARRAY_BUFFER, batches[i]->buffer->id);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(batches[i]->VERTICES), batches[i]->VERTICES, GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+			}
 
 
-		glBindVertexArray(this->batch->buffer->id);
-		glDrawElements(GL_TRIANGLES, sizeof(unsigned int) * G::INDICES.size(), GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
+			glBindVertexArray(batches[i]->buffer->id);
+			glDrawElements(GL_TRIANGLES, sizeof(unsigned int) * batches[i]->INDICES.size(), GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
+		}
 	}
 
 	std::unique_ptr<Renderer::Entity> Entity::init() {

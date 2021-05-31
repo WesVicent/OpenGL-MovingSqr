@@ -14,39 +14,60 @@ protected:
 public:
 	unsigned int id;
 
-	/*unsigned int indices[18] = {
-		0, 1, 2, 2, 3, 0,
+	void update(BufferData vertices, BufferData indices);
 
-		4, 5, 6, 6, 7, 4,
-
-		8, 9, 10, 10, 11, 8
-	};*/
-
+	VertexBuffer(BufferData indices, BufferData vertices, const std::function<void()>& whenBond);
 	VertexBuffer(const std::function<void()>& whenBond);
 	virtual ~VertexBuffer();
 
+
 private:
 	unsigned int indiceBufferId;
-
+	std::unique_ptr<Buffer> buffer;
+	const size_t INDEX_BUFFER_CAPACITY = sizeof(unsigned int) * 18;
 };
 
-VertexBuffer::VertexBuffer(const std::function<void()>& whenBond) {
-	Buffer* buffer = new Buffer([&]() {
+void VertexBuffer::update(BufferData vertices, BufferData indices) {
+	unsigned int* data = (unsigned int*) indices.ref;
+
+	glBindVertexArray(this->id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indiceBufferId);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int) * indices.size, data);
+	glBindVertexArray(0);
+
+	buffer->update(vertices);
+}
+
+// Static buffer
+VertexBuffer::VertexBuffer(BufferData indices, BufferData vertices, const std::function<void()>& whenBond) {
+	buffer = std::make_unique<Buffer>(vertices, [&]() {
 		glGenVertexArrays(1, &this->id);
 		glBindVertexArray(this->id);
 
 		whenBond();
-		unsigned int* data = 0;
-
-		if (G::INDICES.size() > 0) data = &G::INDICES[0];
 
 		glGenBuffers(1, &this->indiceBufferId);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indiceBufferId);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * G::INDICES.size(), data, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size, (unsigned int*) indices.ref, GL_STATIC_DRAW);
 
 		glBindVertexArray(0); // Unbinding VAO
 	});
+}
 
+// Dynamic buffer
+VertexBuffer::VertexBuffer(const std::function<void()>& whenBond) {
+	buffer = std::make_unique<Buffer>([&]() {
+		glGenVertexArrays(1, &this->id);
+		glBindVertexArray(this->id);
+
+		whenBond();
+
+		glGenBuffers(1, &this->indiceBufferId);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indiceBufferId);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, INDEX_BUFFER_CAPACITY, nullptr, GL_DYNAMIC_DRAW);
+
+		glBindVertexArray(0); // Unbinding VAO
+	});
 }
 
 VertexBuffer::~VertexBuffer() {
