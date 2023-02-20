@@ -14,21 +14,20 @@ namespace G {
 	protected:
 
 	public:
-		static SqrData createSqr(float x, float y);
-		static SqrData createSqr(float x, float y, glm::vec3 color);
-		static SqrData createSqr(float x, float y, std::vector<glm::vec4> gradient);
+		static ShapeData createSqr(float x, float y);
+		static ShapeData createSqr(float x, float y, std::vector<glm::vec4> gradient);
 
 		virtual ~Primitive() { }; //TODO: (Need?)
 
 	private:
 	};
 
-	SqrData Primitive::createSqr(float x, float y) {
+	ShapeData Primitive::createSqr(float x, float y) {
 		std::vector<glm::vec4> defaultColor { glm::vec4 { 0.141f, 0.913f, 0.941f, 1.0f } };
 		return createSqr(x, y, defaultColor);
 	}
 	
-	SqrData Primitive::createSqr(float x, float y, std::vector<glm::vec4> gradient) {
+	ShapeData Primitive::createSqr(float x, float y, std::vector<glm::vec4> gradient) {
 		VertexData v0, v1, v2, v3;
 		float size = 0.05f;
 
@@ -49,7 +48,7 @@ namespace G {
 			v3.color = glm::vec4 { gradient[0] };
 		}
 
-		return { v0, v1, v2, v3 };
+		return rect(v0, v1, v2, v3);
 	}
 }
 

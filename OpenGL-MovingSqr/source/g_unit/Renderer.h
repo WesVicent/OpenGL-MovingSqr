@@ -38,8 +38,9 @@ namespace Renderer {
 		if(canMove) {
 			Coordinates calculated = calculateMovements(key);
 
+			// Shaders that has uniforms with same names, even in another shader program, share these uniforms among themselves inside GPU.
+			// So here, "batches[0]" because I'm changing a common uniform across all shaders, so doesn't matter which batch use to do.
 			batches[0]->cameraPosition = glm::translate(batches[0]->cameraPosition, glm::vec3(calculated.x, calculated.y, 0.0f));
-
 			batches[0]->updateUniforms(batches[0]->cameraPosition);
 		}
 	}

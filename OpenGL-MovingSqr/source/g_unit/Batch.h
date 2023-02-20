@@ -18,16 +18,15 @@ namespace G {
 		glm::mat4 cameraPosition = glm::mat4(1.0);
 		std::unique_ptr<VertexBuffer> buffer;
 		std::vector<unsigned int> INDICES;
-		std::array<std::shared_ptr<G::Primitive>, 3> UNIT_POOL; // TODO: UNIT_MAX_COUNT
-		VertexData VERTICES[3 * 4]; // TODO: UNIT_MAX_COUNT * VERTEX_MAX_AMOUNT
+		VertexData VERTICES[3 * 4]; // UNIT_MAX_COUNT * VERTEX_MAX_AMOUNT
 		GLuint programShader;
 
-		void add(SqrData unit);
+		void add(ShapeData unit);
 		void updateUniforms(glm::mat4 movement);
 		void updateBuffer();
 
 		Batch();
-		Batch(SqrData unit);
+		Batch(ShapeData unit);
 
 	private:
 		void processShaders();
@@ -51,7 +50,7 @@ namespace G {
 		processUniforms();
 	}
 	
-	Batch::Batch(SqrData unit) {
+	Batch::Batch(ShapeData unit) {
 		add(unit);
 
 		BufferData vertices { sizeof(VERTICES), &VERTICES[0] };
@@ -88,12 +87,12 @@ namespace G {
 		glUseProgram(programShader);
 		int u_movement = glGetUniformLocation(programShader, "movement");
 
-		cameraPosition = glm::translate(cameraPosition, glm::vec3(0.5f, 0.0f, 0.0f));
+		cameraPosition = glm::translate(cameraPosition, glm::vec3(0.0f, 0.0f, 0.0f));
 
 		glUniformMatrix4fv(u_movement, 1, GL_FALSE, glm::value_ptr(cameraPosition));
 	}
 
-	void Batch::add(SqrData unit) {
+	void Batch::add(ShapeData unit) {
 		memcpy(VERTICES + VERTICES_COUNT, unit.vertices.data(), unit.size);
 
 		for(int i = 0; i < unit.indices.size(); i++) {

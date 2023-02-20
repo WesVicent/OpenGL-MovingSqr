@@ -34,12 +34,23 @@ Player::Player() :Player(0.0f, 0.0f) { }
 
 Player::Player(float x, float y) {
 	auto quad = G::Primitive::createSqr(0.0f + x, 0.0f + y);
-	auto quad1 = G::Primitive::createSqr(0.10f + x, 0.0f + y);
+
+	VertexData v0, v1, v2;
+	float size = 0.05f;
+	v0.position = glm::vec3 { 0.10f, 0.0f, 0.0f };
+	v1.position = glm::vec3 { 0.10f + size, 0.0f, 0.0f };
+	v2.position = glm::vec3 { 0.10f + size / 2, size, 0.0f };
+
+	v0.color = glm::vec4 { 0.141f, 0.913f, 0.941f, 1.0f };
+	v1.color = glm::vec4 { 0.141f, 0.913f, 0.941f, 1.0f };
+	v2.color = glm::vec4 { 0.141f, 0.913f, 0.941f, 1.0f };
+
+	ShapeData tri = { {v0, v1, v2}, {0, 1, 2} };
 
 	batch = std::make_shared<G::Batch>();
 
 	batch->add(quad);
-	batch->add(quad1);
+	batch->add(tri);
 
 	MainWindow::renderer->add(batch);
 }
